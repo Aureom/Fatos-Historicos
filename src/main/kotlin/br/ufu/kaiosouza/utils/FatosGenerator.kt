@@ -28,7 +28,7 @@ class FatosGenerator {
             val date = element.getElementsByClass("hstBlock__category").text()
             val fact = element.getElementsByClass("hstBlock__title").text()
 
-            historicalFacts.add(HistoricalFact(formatHistoryDate(date), fact))
+            historicalFacts.add(HistoricalFact(convertHistoricalDate(date), fact))
         }
 
         return historicalFacts
@@ -39,9 +39,8 @@ class FatosGenerator {
         return LocalDate.now().format(formatter)
     }
 
-    private fun formatHistoryDate(date: String): String {
-        val parsedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MMM.yyyy"))
-        return "${parsedDate.dayOfMonth} de ${parsedDate.month.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))} de ${parsedDate.year}"
+    private fun convertHistoricalDate(date: String): LocalDate {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MMM.yyyy"))
     }
 
 }
