@@ -8,10 +8,7 @@ fun main() {
     val twitter = TwitterFactory.getSingleton()
 
     val historicalFact = fatosParse.getRandomFact()
-    val tweetStatus = twitter.updateStatus(historicalFact.getTweet())
+    twitter.updateStatus(historicalFact.getTweet())
 
-    println("")
     println("Tweet enviado com sucesso!")
-    println(" - Link: twitter.com/${twitter.screenName}/status/$tweetStatus")
-    println("")
 }

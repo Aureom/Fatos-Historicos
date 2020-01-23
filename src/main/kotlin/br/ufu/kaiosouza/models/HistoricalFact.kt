@@ -5,9 +5,9 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 data class HistoricalFact(var date: LocalDate, var fact: String) {
-    init {
+    /*init {
         println("Novo fato historico criado: \n - Data: $date\n - Fato: $fact")
-    }
+    }*/
 
     private fun getDaysElapsed(): Long {
         return ChronoUnit.DAYS.between(date, LocalDate.now())
