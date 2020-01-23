@@ -1,4 +1,4 @@
 # Default ignored files
 .idea
 src/test
-twitter4j.properties
+src/main/kotlin/br/ufu/kaiosouza/resources/twitter4j.properties
