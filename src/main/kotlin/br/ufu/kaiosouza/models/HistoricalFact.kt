@@ -9,11 +9,11 @@ data class HistoricalFact(var date: LocalDate, var fact: String) {
         println("Novo fato historico criado: \n - Data: $date\n - Fato: $fact")
     }*/
 
-    private fun getDaysElapsed(): Long {
-        return ChronoUnit.DAYS.between(date, LocalDate.now())
+    private fun getYearsElapsed(): Long {
+        return ChronoUnit.YEARS.between(date, LocalDate.now())
     }
 
     fun getTweet(): StatusUpdate{
-        return StatusUpdate("Há ${getDaysElapsed()} dias atrás, nessa mesma data em ${date.year}: $fact")
+        return StatusUpdate("Há ${getYearsElapsed()} anos atrás, nessa mesma data em ${date.year}: $fact")
     }
 }
