@@ -39,7 +39,7 @@ class FatosGenerator {
     }
 
     private fun convertHistoricalDate(date: String): LocalDate {
-        val formatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd.MMM.yyyy").toFormatter()
+        val formatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd.MMM.yyyy").toFormatter().withLocale(Locale("pt", "BR"))
         return LocalDate.parse(date, formatter)
     }
 
