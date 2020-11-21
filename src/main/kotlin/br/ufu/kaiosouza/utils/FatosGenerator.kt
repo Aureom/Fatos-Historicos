@@ -23,11 +23,18 @@ class FatosGenerator {
 
         val historicalFacts = ArrayList<HistoricalFact>()
 
-        for (element in facts) { //percorendo todos os fatos historicos desse dia
+        for (element in facts) { //percorrendo todos os fatos historicos desse dia
             val date = element.getElementsByClass("hstBlock__category").text()
-            val fact = element.getElementsByClass("hstBlock__title").text()
+            var fact = element.getElementsByClass("hstBlock__title").text()
+            val factURL = element.select("a").attr("href")
+            val imageURL = element.attr("style").split("url(")[1].dropLast(1)
 
-            historicalFacts.add(HistoricalFact(convertHistoricalDate(date), fact)) //pegando emprestado um fato historico
+            if(fact.contains("...")){ //arrumando fatos pela metade
+                val factDoc = Jsoup.connect("https://br.historyplay.tv${factURL}").timeout(5000)
+                fact = factDoc.get().getElementsByClass("hstEntry__title").first().text()
+            }
+
+            historicalFacts.add(HistoricalFact(convertHistoricalDate(date), fact, imageURL)) //pegando emprestado um fato historico
         }
 
         return historicalFacts
