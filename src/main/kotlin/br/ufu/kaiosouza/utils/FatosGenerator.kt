@@ -6,7 +6,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class FatosGenerator {
@@ -25,9 +24,16 @@ class FatosGenerator {
 
         for (element in facts) { //percorendo todos os fatos historicos desse dia
             val date = element.getElementsByClass("hstBlock__category").text()
-            val fact = element.getElementsByClass("hstBlock__title").text()
+            var fact = element.getElementsByClass("hstBlock__title").text()
+            val factURL = element.select("a").attr("href")
+            val imageURL = element.attr("style").split("url(")[1].dropLast(1)
 
-            historicalFacts.add(HistoricalFact(convertHistoricalDate(date), fact)) //pegando emprestado um fato historico
+            if(fact.contains("...")){ //arrumando fatos pela metade
+                val factDoc = Jsoup.connect("https://br.historyplay.tv${factURL}").timeout(5000)
+                fact = factDoc.get().getElementsByClass("hstEntry__title").first().text()
+            }
+
+            historicalFacts.add(HistoricalFact(convertHistoricalDate(date), fact, imageURL)) //pegando emprestado um fato historico
         }
 
         return historicalFacts
@@ -39,7 +45,13 @@ class FatosGenerator {
     }
 
     private fun convertHistoricalDate(date: String): LocalDate {
-        val formatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd.MMM.yyyy").toFormatter().withLocale(Locale("pt", "BR"))
+        val formatter = DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendOptional(DateTimeFormatter.ofPattern("dd.MMMM.yyyy"))
+            .appendOptional(DateTimeFormatter.ofPattern("dd.MMM.yyyy"))
+            .toFormatter()
+            .withLocale(Locale("pt", "BR"))
+
         return LocalDate.parse(date, formatter)
     }
 
